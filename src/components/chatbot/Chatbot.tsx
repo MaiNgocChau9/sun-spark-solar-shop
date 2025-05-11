@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, ArrowUp, Sun } from 'lucide-react';
+import { toast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -72,12 +73,12 @@ const Chatbot = () => {
         parts: [{ text: `Bạn là trợ lý ảo của Solar Diệp Châu, công ty chuyên cung cấp giải pháp năng lượng mặt trời tại Việt Nam. 
                   Hãy trả lời câu hỏi sau một cách ngắn gọn, hữu ích và thân thiện, đồng thời ghi nhớ các thông tin trước đó trong cuộc trò chuyện này: ${inputValue}` }],
       };
-
-      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent', {
+      
+      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-preview-04-17:generateContent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-goog-api-key': 'AIzaSyCND9BLNkwrtFuNjaKhC-0VbMQpH5rUkQY',
+          'x-goog-api-key': 'AIzaSyCND9BLNkwrtFuNjaKhC-0VbMQpH5rUkQY', // Replace with your actual API key
         },
         body: JSON.stringify({
           contents: [...conversationHistory, currentInput], // Send the whole conversation
@@ -90,7 +91,14 @@ const Chatbot = () => {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(errorData.error?.message || `API returned status ${response.status}`);
+      }
+
       const data = await response.json();
+      console.log("API response:", data);
       
       if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
         const botResponse = data.candidates[0].content.parts[0].text;
@@ -103,11 +111,20 @@ const Chatbot = () => {
         };
 
         setMessages((prev) => [...prev, botMessage]);
+      } else if (data.error) {
+        console.error('Gemini API Error:', data.error);
+        throw new Error(data.error.message || 'API error');
       } else {
         throw new Error('Invalid response format');
       }
     } catch (error) {
       console.error('Error calling Gemini API:', error);
+      
+      toast({
+        variant: "destructive",
+        title: "Lỗi kết nối",
+        description: "Không thể kết nối với trợ lý ảo. Vui lòng thử lại sau."
+      });
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
