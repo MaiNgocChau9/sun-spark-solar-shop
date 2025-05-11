@@ -5,6 +5,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom styles for chatbot user messages to ensure white text */
+.prose-custom-white p,
+.prose-custom-white strong,
+.prose-custom-white em,
+.prose-custom-white ul,
+.prose-custom-white ol,
+.prose-custom-white li,
+.prose-custom-white a,
+.prose-custom-white h1,
+.prose-custom-white h2,
+.prose-custom-white h3,
+.prose-custom-white h4,
+.prose-custom-white h5,
+.prose-custom-white h6,
+.prose-custom-white blockquote,
+.prose-custom-white code,
+.prose-custom-white pre,
+.prose-custom-white table, /* Thêm table và các thành phần của nó nếu cần */
+.prose-custom-white th,
+.prose-custom-white td,
+.prose-custom-white thead,
+.prose-custom-white tbody,
+.prose-custom-white figure,
+.prose-custom-white figcaption,
+.prose-custom-white hr,
+.prose-custom-white img {
+  color: #FFFFFF !important;
+}
+
+/* Đặc biệt cho link trong tin nhắn người dùng, nếu muốn màu khác */
+.prose-custom-white a {
+  color: #FFFFFF !important; /* Giữ màu trắng hoặc đổi thành màu khác nếu muốn link nổi bật hơn */
+  text-decoration: underline; /* Thêm gạch chân cho link nếu muốn */
+}
+.prose-custom-white a:hover {
+  color: #f0f0f0 !important; /* Màu khi hover link */
+}
+
+/* Đảm bảo màu của code block cũng là trắng nếu cần */
+.prose-custom-white code::before,
+.prose-custom-white code::after {
+  content: none; /* Bỏ content của pseudo-elements nếu có */
+}
+.prose-custom-white pre {
+    background-color: rgba(0,0,0,0.2) !important; /* Nền cho code block */
+    color: #FFFFFF !important;
+}
+.prose-custom-white pre code {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+}
+
 @layer base {
   :root {
     --background: 142 70% 98%;

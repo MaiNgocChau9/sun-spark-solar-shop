@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Sun } from 'lucide-react'; // Bỏ ArrowUp nếu không dùng nữa
+import { MessageSquare, Send, X, Sun } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
 
 interface Message {
   id: string;
@@ -191,7 +192,7 @@ const Chatbot = () => {
           </div>
 
           <div 
-            className={`overflow-y-auto p-4 bg-muted/30 
+            className={`overflow-y-auto p-4 bg-white 
             ${isMobileFullscreen ? 'flex-grow' : 'h-80'}`}
           >
             {messages.map((message) => (
@@ -200,13 +201,19 @@ const Chatbot = () => {
                 className={`mb-4 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[80%] rounded-xl p-3 shadow-md ${
                     message.isUser
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
+                      ? 'bg-primary text-white' // Đảm bảo text-white ở đây
+                      : 'bg-gray-200 text-gray-800 dark:bg-slate-700 dark:text-slate-100'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  <div 
+                    className={`text-sm prose prose-p:my-1 prose-ul:my-1 prose-ol:my-1 max-w-none ${
+                      message.isUser ? 'prose-invert prose-custom-white' : 'dark:prose-invert'
+                    }`}
+                  >
+                    <ReactMarkdown>{message.text}</ReactMarkdown>
+                  </div>
                   <span className="text-xs opacity-70 mt-1 block text-right">
                     {formatTime(message.timestamp)}
                   </span>
@@ -227,8 +234,8 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-3 border-t">
-            <div className="flex">
+          <div className="p-3 border-t bg-white dark:bg-slate-800"> {/* Nền input area cũng có thể cần điều chỉnh nếu toàn bộ là trắng */}
+            <div className="flex items-center bg-gray-100 dark:bg-slate-700 rounded-full shadow-sm border border-gray-300 dark:border-slate-600">
               <input
                 ref={inputRef}
                 type="text"
@@ -236,13 +243,13 @@ const Chatbot = () => {
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Nhập tin nhắn..."
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-grow h-10 bg-transparent px-4 py-2 text-sm focus:outline-none dark:text-slate-100 dark:placeholder-slate-400"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={inputValue.trim() === '' || isLoading}
-                className="ml-2 bg-primary text-primary-foreground hover:bg-primary/90 p-2 rounded-md disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 p-2 rounded-full m-1 disabled:opacity-50 transition-colors"
                 aria-label="Gửi tin nhắn"
               >
                 <Send className="h-5 w-5" />
