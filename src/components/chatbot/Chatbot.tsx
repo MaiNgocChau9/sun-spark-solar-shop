@@ -1,6 +1,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, ArrowUp, Sun } from 'lucide-react';
+import { toast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -61,8 +62,8 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Cập nhật API endpoint để sử dụng mô hình gemini-pro thay vì mô hình không tồn tại
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+      // Sử dụng model gemini-1.0-pro vì đây là model ổn định hiện tại
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,9 +90,15 @@ const Chatbot = () => {
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(errorData.error?.message || `API returned status ${response.status}`);
+      }
+
       const data = await response.json();
+      console.log("API response:", data);
       
-      // Cập nhật cách truy cập phản hồi từ API dựa trên cấu trúc phản hồi mới
       if (data.candidates && data.candidates[0] && data.candidates[0].content) {
         const botResponse = data.candidates[0].content.parts[0].text;
         
@@ -104,7 +111,6 @@ const Chatbot = () => {
 
         setMessages((prev) => [...prev, botMessage]);
       } else if (data.error) {
-        // Xử lý trường hợp API trả về lỗi
         console.error('Gemini API Error:', data.error);
         throw new Error(data.error.message || 'API error');
       } else {
@@ -112,6 +118,12 @@ const Chatbot = () => {
       }
     } catch (error) {
       console.error('Error calling Gemini API:', error);
+      
+      toast({
+        variant: "destructive",
+        title: "Lỗi kết nối",
+        description: "Không thể kết nối với trợ lý ảo. Vui lòng thử lại sau."
+      });
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
