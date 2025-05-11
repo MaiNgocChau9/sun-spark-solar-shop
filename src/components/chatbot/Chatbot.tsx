@@ -61,7 +61,8 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-preview-04-17:generateContent', {
+      // Cập nhật API endpoint để sử dụng mô hình gemini-pro thay vì mô hình không tồn tại
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +91,7 @@ const Chatbot = () => {
 
       const data = await response.json();
       
+      // Cập nhật cách truy cập phản hồi từ API dựa trên cấu trúc phản hồi mới
       if (data.candidates && data.candidates[0] && data.candidates[0].content) {
         const botResponse = data.candidates[0].content.parts[0].text;
         
@@ -101,6 +103,10 @@ const Chatbot = () => {
         };
 
         setMessages((prev) => [...prev, botMessage]);
+      } else if (data.error) {
+        // Xử lý trường hợp API trả về lỗi
+        console.error('Gemini API Error:', data.error);
+        throw new Error(data.error.message || 'API error');
       } else {
         throw new Error('Invalid response format');
       }
