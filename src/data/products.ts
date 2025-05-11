@@ -52,27 +52,6 @@ export const products: ProductType[] = [
     warranty: "10 năm"
   },
   {
-    id: "sp003",
-    name: "Bộ Lưu Trữ Điện LithiumPro 10kWh",
-    description: "Bộ lưu trữ điện LithiumPro với dung lượng 10kWh, sử dụng công nghệ pin Lithium-ion tiên tiến. Thiết kế an toàn với hệ thống quản lý pin thông minh BMS, tự động điều chỉnh nhiệt độ và cân bằng tế bào, tuổi thọ lên đến 6000 chu kỳ sạc/xả.",
-    category: "Lưu Trữ Điện",
-    price: 85000000,
-    image: "https://images.unsplash.com/photo-1569480322782-ea9817040ea7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    rating: 5,
-    reviewCount: 42,
-    featured: true,
-    specs: {
-      "Dung lượng": "10kWh",
-      "Điện áp": "48V",
-      "Chu kỳ sạc/xả": "6000 chu kỳ",
-      "Hiệu suất": "95%",
-      "Kích thước": "600 x 800 x 150mm",
-      "Bảo hành": "10 năm"
-    },
-    stock: 15,
-    warranty: "10 năm"
-  },
-  {
     id: "sp004",
     name: "Bộ Điều Khiển Sạc MPPT 60A",
     description: "Bộ điều khiển sạc MPPT công nghệ mới nhất với dòng điện tối đa 60A, tối ưu hóa quá trình sạc từ tấm pin mặt trời vào ắc quy. Thiết kế với thuật toán theo dõi điểm công suất cực đại, giúp tăng hiệu suất sạc lên đến 30% so với bộ điều khiển PWM truyền thống.",
@@ -92,29 +71,6 @@ export const products: ProductType[] = [
     },
     stock: 68,
     warranty: "5 năm"
-  },
-  {
-    id: "sp005",
-    name: "Tấm Pin Mặt Trời Linh Hoạt 200W",
-    description: "Tấm pin năng lượng mặt trời linh hoạt, có thể uốn cong lên đến 30 độ, phù hợp lắp đặt trên các bề mặt cong như thuyền, xe RV, hoặc mái vòm. Trọng lượng siêu nhẹ, chỉ 2.5kg, dễ dàng lắp đặt và di chuyển.",
-    category: "Tấm Pin Mặt Trời",
-    price: 3800000,
-    oldPrice: 4200000,
-    image: "https://images.unsplash.com/photo-1548690596-f1722c190938?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1625&q=80",
-    rating: 4,
-    reviewCount: 31,
-    featured: false,
-    sale: true,
-    specs: {
-      "Công suất": "200W",
-      "Kích thước": "1100 x 540 x 3mm",
-      "Trọng lượng": "2.5kg",
-      "Hiệu suất": "19.5%",
-      "Độ uốn cong": "30 độ",
-      "Bảo hành": "15 năm"
-    },
-    stock: 23,
-    warranty: "15 năm"
   },
   {
     id: "sp006",
@@ -137,46 +93,4 @@ export const products: ProductType[] = [
     stock: 19,
     warranty: "3 năm"
   },
-  {
-    id: "sp007",
-    name: "Inverter Hybrid 8kW Solar",
-    description: "Inverter hybrid thế hệ mới, kết hợp chức năng inverter và bộ sạc ắc quy, cho phép sử dụng điện từ nhiều nguồn: pin mặt trời, lưới điện và ắc quy. Chuyển đổi tự động khi mất điện lưới, thời gian chuyển đổi chỉ 10ms không làm gián đoạn thiết bị đang hoạt động.",
-    category: "Inverter",
-    price: 42000000,
-    image: "https://images.unsplash.com/photo-1559347830-9d21e4b16e89?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    rating: 5,
-    reviewCount: 19,
-    featured: false,
-    specs: {
-      "Công suất": "8kW",
-      "Điện áp đầu vào": "120-500V DC, 220V AC",
-      "Điện áp đầu ra": "220V AC",
-      "Hiệu suất": "97.6%",
-      "Thời gian chuyển đổi": "10ms",
-      "Bảo hành": "10 năm"
-    },
-    stock: 12,
-    warranty: "10 năm"
-  },
-  {
-    id: "sp008",
-    name: "Tấm Pin BIPV Solar Window",
-    description: "Tấm pin mặt trời tích hợp vào công trình (BIPV), thiết kế như kính cửa sổ bán trong suốt cho phép ánh sáng đi qua. Lý tưởng cho các tòa nhà thương mại, văn phòng hiện đại, kết hợp giữa thẩm mỹ kiến trúc và khả năng sản xuất điện năng.",
-    category: "Tấm Pin Mặt Trời",
-    price: 12800000,
-    image: "https://images.unsplash.com/photo-1636041282065-8f61a1f28f30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1476&q=80",
-    rating: 4,
-    reviewCount: 11,
-    featured: true,
-    specs: {
-      "Công suất": "180W/m²",
-      "Độ trong suốt": "20-40%",
-      "Kích thước": "Tùy chỉnh",
-      "Hiệu suất": "16%",
-      "Màu sắc": "Xanh, Xám, Nâu",
-      "Bảo hành": "20 năm"
-    },
-    stock: 8,
-    warranty: "20 năm"
-  }
 ];

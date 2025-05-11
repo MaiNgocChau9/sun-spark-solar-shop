@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Check, Award, Users, Sun, ArrowRight } from 'lucide-react';
 import Navbar from "@/components/layout/Navbar";
@@ -14,8 +13,8 @@ const About = () => {
         <section className="pt-32 pb-16 bg-gradient-to-r from-solar-50 to-solar-200">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-3xl md:text-5xl font-bold mb-6">
-                Chúng tôi là <span className="text-primary">SolarTech</span>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                Chúng tôi là <span className="text-primary">Solar Diệp Châu</span>
               </h1>
               <p className="text-xl mb-8 text-muted-foreground">
                 Nhà cung cấp hàng đầu các giải pháp năng lượng mặt trời chất lượng cao, 
@@ -32,28 +31,28 @@ const About = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-6">Câu chuyện của chúng tôi</h2>
                 <p className="mb-4 text-muted-foreground">
-                  SolarTech được thành lập vào năm 2010 bởi một nhóm các kỹ sư và nhà khoa học có niềm đam mê 
+                  Solar Diệp Châu được thành lập vào năm 2010 bởi một nhóm các kỹ sư và nhà khoa học có niềm đam mê 
                   mãnh liệt với năng lượng tái tạo. Xuất phát từ nhận thức về tình trạng biến đổi khí hậu 
                   và nhu cầu cấp thiết phải chuyển đổi sang nguồn năng lượng sạch, chúng tôi bắt đầu hành trình 
                   của mình với mục tiêu mang công nghệ năng lượng mặt trời tiên tiến đến với mọi ngôi nhà 
                   và doanh nghiệp tại Việt Nam.
                 </p>
                 <p className="mb-4 text-muted-foreground">
-                  Từ một đội ngũ nhỏ chỉ với 5 thành viên ban đầu, SolarTech đã phát triển thành một 
+                  Từ một đội ngũ nhỏ chỉ với 5 thành viên ban đầu, Solar Diệp Châu đã phát triển thành một 
                   doanh nghiệp với hơn 100 nhân viên, hoạt động trên khắp Việt Nam. Chúng tôi tự hào là 
                   đối tác tin cậy của hàng nghìn khách hàng, từ hộ gia đình đến các tập đoàn lớn, 
                   trong việc chuyển đổi sang năng lượng xanh.
                 </p>
                 <p className="text-muted-foreground">
-                  Với hơn 10 năm kinh nghiệm và hàng nghìn dự án đã thực hiện thành công, SolarTech cam kết 
+                  Với hơn 10 năm kinh nghiệm và hàng nghìn dự án đã thực hiện thành công, Solar Diệp Châu cam kết 
                   tiếp tục đổi mới và phát triển để mang lại những giải pháp năng lượng mặt trời tốt nhất 
                   cho khách hàng của mình.
                 </p>
               </div>
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                  alt="SolarTech Team"
+                  src="/placeholder.svg" 
+                  alt="Solar Diệp Châu Team"
                   className="rounded-lg shadow-lg w-full h-auto"
                 />
                 <div className="absolute -bottom-6 -right-6 bg-white dark:bg-solar-900 rounded-lg shadow-lg p-6">
@@ -174,9 +173,9 @@ const About = () => {
         <section className="py-16 bg-muted/30">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold mb-6">Đội ngũ của chúng tôi</h2>
-              <p className="text-lg text-muted-foreground">
-                Gặp gỡ những con người tài năng và đam mê đằng sau thành công của SolarTech.
+              <h2 className="text-3xl font-bold mb-4">Đội ngũ của chúng tôi</h2>
+              <p className="text-lg text-muted-foreground mb-12">
+                Gặp gỡ những con người tài năng và đam mê đằng sau thành công của Solar Diệp Châu.
               </p>
             </div>
             
@@ -237,8 +236,8 @@ const About = () => {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center mb-12">
               <h2 className="text-3xl font-bold mb-6">Thành tựu của chúng tôi</h2>
-              <p className="text-lg text-muted-foreground">
-                Những con số và giải thưởng minh chứng cho hành trình phát triển của SolarTech.
+              <p className="text-lg text-muted-foreground mb-12">
+                Những con số và giải thưởng minh chứng cho hành trình phát triển của Solar Diệp Châu.
               </p>
             </div>
             
@@ -319,7 +318,7 @@ const About = () => {
               </h2>
               <p className="text-xl mb-8 opacity-90">
                 Hãy liên hệ với chúng tôi ngay hôm nay để nhận tư vấn miễn phí và bắt đầu 
-                hành trình tiết kiệm năng lượng với SolarTech.
+                hành trình tiết kiệm năng lượng với Solar Diệp Châu.
               </p>
               <Link 
                 to="/contact" 

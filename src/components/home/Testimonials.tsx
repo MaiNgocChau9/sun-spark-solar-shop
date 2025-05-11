@@ -7,7 +7,7 @@ const testimonials = [
     name: 'Nguyễn Văn A',
     role: 'Chủ nhà tại TP. HCM',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    quote: 'Tôi đã lắp đặt hệ thống pin mặt trời của SolarTech cho ngôi nhà của tôi cách đây 2 năm. Hệ thống hoạt động tuyệt vời, hóa đơn tiền điện giảm đáng kể và dịch vụ hỗ trợ của họ rất chuyên nghiệp.',
+    quote: 'Tôi đã lắp đặt hệ thống pin mặt trời của Solar Diệp Châu cho ngôi nhà của tôi cách đây 2 năm. Hệ thống hoạt động tuyệt vời, hóa đơn tiền điện giảm đáng kể và dịch vụ hỗ trợ của họ rất chuyên nghiệp.',
     rating: 5
   },
   {
@@ -15,7 +15,7 @@ const testimonials = [
     name: 'Trần Thị B',
     role: 'Giám đốc công ty sản xuất',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    quote: 'Chúng tôi đã triển khai hệ thống năng lượng mặt trời quy mô lớn cho nhà máy với sự tư vấn của SolarTech. Họ đã giúp chúng tôi tiết kiệm đến 40% chi phí điện năng. Đầu tư thông minh!',
+    quote: 'Chúng tôi đã triển khai hệ thống năng lượng mặt trời quy mô lớn cho nhà máy với sự tư vấn của Solar Diệp Châu. Họ đã giúp chúng tôi tiết kiệm đến 40% chi phí điện năng. Đầu tư thông minh!',
     rating: 5
   },
   {
@@ -23,7 +23,7 @@ const testimonials = [
     name: 'Lê Văn C',
     role: 'Chủ trang trại nông nghiệp',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    quote: 'Tôi đã lắp đặt các tấm pin mặt trời của SolarTech tại trang trại của tôi để vận hành hệ thống tưới tiêu. Thiết bị hoạt động rất tốt ngay cả trong điều kiện thời tiết khắc nghiệt.',
+    quote: 'Tôi đã lắp đặt các tấm pin mặt trời của Solar Diệp Châu tại trang trại của tôi để vận hành hệ thống tưới tiêu. Thiết bị hoạt động rất tốt ngay cả trong điều kiện thời tiết khắc nghiệt.',
     rating: 4
   },
   {
@@ -31,7 +31,7 @@ const testimonials = [
     name: 'Phạm Thị D',
     role: 'Quản lý chuỗi cửa hàng',
     image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=922&q=80',
-    quote: 'Chúng tôi đã lắp đặt các tấm pin SolarTech cho 5 cửa hàng trong chuỗi và đã thấy kết quả rõ rệt về mặt tiết kiệm chi phí. Đội ngũ kỹ thuật rất chuyên nghiệp và tận tâm.',
+    quote: 'Chúng tôi đã lắp đặt các tấm pin Solar Diệp Châu cho 5 cửa hàng trong chuỗi và đã thấy kết quả rõ rệt về mặt tiết kiệm chi phí. Đội ngũ kỹ thuật rất chuyên nghiệp và tận tâm.',
     rating: 5
   }
 ];
@@ -97,7 +97,7 @@ const Testimonials = () => {
           Khách hàng nói gì về chúng tôi
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-          Khám phá trải nghiệm thực tế từ những khách hàng đã sử dụng các giải pháp năng lượng mặt trời của SolarTech
+          Khám phá trải nghiệm thực tế từ những khách hàng đã sử dụng các giải pháp năng lượng mặt trời của Solar Diệp Châu
         </p>
 
         <div 

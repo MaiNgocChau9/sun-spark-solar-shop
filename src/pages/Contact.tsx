@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -55,9 +54,8 @@ const Contact = () => {
         <div className="container">
           <div className="mb-12 text-center max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Liên hệ với chúng tôi</h1>
-            <p className="text-muted-foreground">
-              Bạn có câu hỏi hoặc cần tư vấn về các giải pháp năng lượng mặt trời? 
-              Hãy liên hệ với chúng tôi, đội ngũ của SolarTech luôn sẵn sàng hỗ trợ bạn.
+            <p className="text-lg text-muted-foreground mb-8">
+              Hãy liên hệ với chúng tôi, đội ngũ của Solar Diệp Châu luôn sẵn sàng hỗ trợ bạn.
             </p>
           </div>
           
@@ -68,25 +66,28 @@ const Contact = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Điện thoại</h3>
               <p className="text-muted-foreground mb-2">Gọi ngay cho chúng tôi</p>
-              <a 
-                href="tel:+842839123456" 
-                className="font-medium text-primary hover:underline"
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText("0987261283");
+                  toast({ title: "Đã sao chép số điện thoại!", description: "0987 261 283" });
+                }}
+                className="font-medium text-primary hover:underline focus:outline-none"
               >
-                +84 28 3912 3456
-              </a>
+                0987 261 283
+              </button>
             </div>
             
             <div className="bg-white dark:bg-solar-900 rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-shadow">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 text-primary rounded-full mb-4">
-                <Mail className="h-6 w-6" />
+                <Mail className="h-6 w-6" /> 
               </div>
               <h3 className="text-lg font-semibold mb-2">Email</h3>
               <p className="text-muted-foreground mb-2">Gửi email cho chúng tôi</p>
               <a 
-                href="mailto:info@solartech.vn" 
+                href="mailto:info@solardiepchau.vn" 
                 className="font-medium text-primary hover:underline"
               >
-                info@solartech.vn
+                info@solardiepchau.vn
               </a>
             </div>
             
@@ -96,9 +97,14 @@ const Contact = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Địa chỉ</h3>
               <p className="text-muted-foreground mb-2">Đến thăm văn phòng của chúng tôi</p>
-              <address className="not-italic font-medium">
-                123 Đường Lê Lợi, Quận 1, TP.HCM
-              </address>
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Cửa hàng Điện nước Diệp Châu, Ấp 4, xã Thạnh Phú, huyện Vĩnh Cửu, tỉnh Đồng Nai")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary hover:underline"
+              >
+                Ấp 4, xã Thạnh Phú, huyện Vĩnh Cửu, tỉnh Đồng Nai
+              </a>
             </div>
           </div>
           
@@ -220,14 +226,14 @@ const Contact = () => {
             {/* Map */}
             <div className="bg-white dark:bg-solar-900 rounded-xl shadow-sm overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.3904485130503!2d106.6996366!3d10.7825464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3ab9e3b0a9%3A0xbd51759452b4a464!2sLe%20Loi%2C%20District%201%2C%20Ho%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1659431080345!5m2!1sen!2sus"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent("Cửa hàng Điện nước Diệp Châu, Ấp 4, xã Thạnh Phú, huyện Vĩnh Cửu, tỉnh Đồng Nai")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="450"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="SolarTech Map Location"
+                title="Solar Diệp Châu Map Location"
               ></iframe>
             </div>
           </div>

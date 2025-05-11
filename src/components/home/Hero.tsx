@@ -19,7 +19,7 @@ const Hero = () => {
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
             Khám phá các giải pháp năng lượng tái tạo hiệu quả, tiết kiệm chi phí 
-            và thân thiện với môi trường từ SolarTech.
+            và thân thiện với môi trường từ Solar Diệp Châu.
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4">

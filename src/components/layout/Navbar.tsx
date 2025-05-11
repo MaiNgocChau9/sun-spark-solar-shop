@@ -57,7 +57,7 @@ const Navbar = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary"
           >
             <Sun className="h-8 w-8" />
-            <span>SolarTech</span>
+            <span>Solar Diệp Châu</span>
           </Link>
 
           {/* Desktop Navigation */}

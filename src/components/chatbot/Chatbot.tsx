@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, ArrowUp, Sun } from 'lucide-react';
 
@@ -14,7 +13,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Xin chào! Tôi là trợ lý ảo của SolarTech. Tôi có thể giúp gì cho bạn về các sản phẩm năng lượng mặt trời?',
+      text: 'Xin chào! Tôi là trợ lý ảo của Solar Diệp Châu. Tôi có thể giúp gì cho bạn về các sản phẩm năng lượng mặt trời?',
       isUser: false,
       timestamp: new Date(),
     },
@@ -61,24 +60,27 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-preview-04-17:generateContent', {
+      // Prepare conversation history for the API
+      const conversationHistory = messages.map(msg => ({
+        role: msg.isUser ? 'user' : 'model',
+        parts: [{ text: msg.text }],
+      }));
+
+      // Add the current user input to the history
+      const currentInput = {
+        role: 'user',
+        parts: [{ text: `Bạn là trợ lý ảo của Solar Diệp Châu, công ty chuyên cung cấp giải pháp năng lượng mặt trời tại Việt Nam. 
+                  Hãy trả lời câu hỏi sau một cách ngắn gọn, hữu ích và thân thiện, đồng thời ghi nhớ các thông tin trước đó trong cuộc trò chuyện này: ${inputValue}` }],
+      };
+
+      const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-goog-api-key': 'AIzaSyCND9BLNkwrtFuNjaKhC-0VbMQpH5rUkQY',
         },
         body: JSON.stringify({
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                {
-                  text: `Bạn là trợ lý ảo của SolarTech, công ty chuyên cung cấp giải pháp năng lượng mặt trời tại Việt Nam. 
-                  Hãy trả lời câu hỏi sau một cách ngắn gọn, hữu ích và thân thiện: ${inputValue}`
-                }
-              ]
-            }
-          ],
+          contents: [...conversationHistory, currentInput], // Send the whole conversation
           generationConfig: {
             temperature: 0.7,
             topK: 32,
@@ -90,7 +92,7 @@ const Chatbot = () => {
 
       const data = await response.json();
       
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
         const botResponse = data.candidates[0].content.parts[0].text;
         
         const botMessage: Message = {
@@ -140,7 +142,7 @@ const Chatbot = () => {
           <div className="bg-primary p-4 text-primary-foreground flex justify-between items-center">
             <div className="flex items-center">
               <Sun className="h-5 w-5 mr-2" />
-              <h3 className="font-medium">Trợ lý SolarTech</h3>
+              <h3 className="font-medium">Trợ lý Solar Diệp Châu</h3>
             </div>
             <button
               onClick={handleToggleChat}

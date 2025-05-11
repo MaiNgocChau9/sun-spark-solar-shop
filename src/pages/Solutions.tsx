@@ -1,4 +1,3 @@
-
 import { ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from "@/components/layout/Navbar";
@@ -11,7 +10,7 @@ const Solutions = () => {
       id: 'residential',
       title: 'Giải pháp cho hộ gia đình',
       description: 'Hệ thống năng lượng mặt trời tối ưu cho ngôi nhà của bạn, giúp tiết kiệm chi phí điện và tăng giá trị bất động sản.',
-      image: 'https://images.unsplash.com/photo-1513269890863-6b5261eaedb1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+      image: 'https://images.unsplash.com/photo-1583345237708-add35a664d77?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       features: [
         'Hệ thống trên mái nhà từ 3kW đến 15kW',
         'Thiết kế phù hợp với kiến trúc nhà',
@@ -39,7 +38,7 @@ const Solutions = () => {
       id: 'agricultural',
       title: 'Giải pháp cho nông nghiệp',
       description: 'Hệ thống năng lượng mặt trời cho các trang trại, khu vực nuôi trồng thủy sản và các hoạt động nông nghiệp, giúp tiết kiệm chi phí vận hành và tăng năng suất.',
-      image: 'https://images.unsplash.com/photo-1593352216840-17321cd73c6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+      image: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
       features: [
         'Hệ thống bơm nước năng lượng mặt trời',
         'Giải pháp kết hợp nông nghiệp và năng lượng mặt trời',
@@ -138,7 +137,7 @@ const Solutions = () => {
               
               <div className="space-y-12 md:space-y-0">
                 {/* Step 1 */}
-                <div className="md:grid md:grid-cols-2 md:gap-8 relative md:mb-20">
+                <div className="md:grid md:grid-cols-2 md:gap-8 relative"> {/* Removed md:mb-20 */}
                   <div className="hidden md:flex absolute left-1/2 top-6 -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-primary text-white font-bold z-10">
                     1
                   </div>
@@ -227,7 +226,7 @@ const Solutions = () => {
                 <h2 className="text-2xl md:text-3xl font-bold mb-3">Bạn sẵn sàng chuyển đổi sang năng lượng mặt trời?</h2>
                 <p className="text-primary-foreground/90 max-w-2xl">
                   Liên hệ với chúng tôi ngay hôm nay để nhận tư vấn miễn phí và bắt đầu hành trình 
-                  tiết kiệm năng lượng của bạn với SolarTech.
+                  tiết kiệm năng lượng của bạn với Solar Diệp Châu.
                 </p>
               </div>
               
