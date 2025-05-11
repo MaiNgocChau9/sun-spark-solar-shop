@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, ArrowUp, Sun } from 'lucide-react';
+import { MessageSquare, Send, X, Sun } from 'lucide-react'; // Bỏ ArrowUp nếu không dùng nữa
 import { toast } from "@/hooks/use-toast";
 
 interface Message {
@@ -23,6 +23,15 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -152,17 +161,28 @@ const Chatbot = () => {
     });
   };
 
+  const isMobileFullscreen = isOpen && windowWidth < 500;
+
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <>
+      {/* Chat Window */}
       {isOpen && (
-        <div className="bg-white dark:bg-solar-900 rounded-lg shadow-xl w-80 sm:w-96 overflow-hidden mb-4 border border-border animate-fade-in">
+        <div 
+          className={`
+            ${isMobileFullscreen 
+              ? 'fixed inset-0 w-full h-full rounded-none z-[60] flex flex-col' 
+              : 'w-80 sm:w-96 rounded-lg shadow-xl mb-4 border border-border fixed bottom-20 right-6 z-50 flex flex-col'
+            } 
+            bg-white dark:bg-solar-900 overflow-hidden animate-fade-in
+          `}
+        >
           <div className="bg-primary p-4 text-primary-foreground flex justify-between items-center">
             <div className="flex items-center">
               <Sun className="h-5 w-5 mr-2" />
               <h3 className="font-medium">Trợ lý Solar Diệp Châu</h3>
             </div>
             <button
-              onClick={handleToggleChat}
+              onClick={handleToggleChat} // Nút này sẽ đóng cả fullscreen và popup
               className="text-primary-foreground hover:bg-primary-foreground/10 p-1 rounded-full transition-colors"
               aria-label="Đóng hộp thoại"
             >
@@ -170,7 +190,10 @@ const Chatbot = () => {
             </button>
           </div>
 
-          <div className="h-80 overflow-y-auto p-4 bg-muted/30">
+          <div 
+            className={`overflow-y-auto p-4 bg-muted/30 
+            ${isMobileFullscreen ? 'flex-grow' : 'h-80'}`}
+          >
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -229,16 +252,20 @@ const Chatbot = () => {
         </div>
       )}
 
-      <button
-        onClick={handleToggleChat}
-        className={`${
-          isOpen ? 'bg-muted border border-border' : 'bg-primary text-primary-foreground'
-        } h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110`}
-        aria-label={isOpen ? 'Thu gọn hộp thoại' : 'Mở hộp thoại'}
-      >
-        {isOpen ? <ArrowUp className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
-      </button>
-    </div>
+      {/* Trigger Button - Ẩn khi chat fullscreen trên mobile */}
+      {!isMobileFullscreen && (
+        <button
+          onClick={handleToggleChat}
+          className={`fixed bottom-6 right-6 z-50 ${
+            isOpen ? 'bg-muted border border-border' : 'bg-primary text-primary-foreground'
+          } h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110`}
+          aria-label={isOpen ? 'Đóng hộp thoại' : 'Mở hộp thoại'}
+        >
+          {/* Icon X khi mở (popup mode), MessageSquare khi đóng */}
+          {isOpen ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
+        </button>
+      )}
+    </>
   );
 };
 
