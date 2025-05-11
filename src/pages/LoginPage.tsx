@@ -60,17 +60,22 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-solar-dark-background py-12 px-4 sm:px-6 lg:px-8 pt-24 md:pt-28">
-        <Card className="w-full max-w-md shadow-xl">
+      {/* Áp dụng nền tương tự Hero section */}
+      <main className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-solar-100 via-solar-50 to-sky-100 dark:from-solar-900 dark:via-solar-800 dark:to-sky-900 py-12 px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 overflow-hidden">
+        {/* Lớp ảnh nền mờ */}
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80')] bg-no-repeat bg-cover opacity-5 dark:opacity-[0.03]"></div>
+        
+        {/* Card với hiệu ứng mờ */}
+        <Card className="relative w-full max-w-md shadow-xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/20 dark:border-slate-700/50">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold text-primary">Đăng Nhập</CardTitle>
-            <CardDescription>Chào mừng trở lại! Vui lòng nhập thông tin của bạn.</CardDescription>
+            <CardTitle className="text-3xl font-bold text-primary dark:text-solar-400">Đăng Nhập</CardTitle>
+            <CardDescription className="dark:text-slate-300">Chào mừng trở lại! Vui lòng nhập thông tin của bạn.</CardDescription>
           </CardHeader>
           <CardContent>
-            {error && <p className="mb-4 text-center text-sm text-red-600 bg-red-100 dark:bg-red-900/30 p-3 rounded-md">{error}</p>}
+            {error && <p className="mb-4 text-center text-sm text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-500/20 p-3 rounded-md">{error}</p>}
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Địa chỉ Email</Label>
+                <Label htmlFor="email" className="dark:text-slate-200">Địa chỉ Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -79,13 +84,14 @@ const LoginPage: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
+                  className="bg-white/70 dark:bg-slate-800/70 dark:text-slate-50 dark:placeholder-slate-400"
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Mật khẩu</Label>
+                  <Label htmlFor="password" className="dark:text-slate-200">Mật khẩu</Label>
                   <Link to="/forgot-password" // TODO: Tạo trang ForgotPassword
-                    className="text-sm font-medium text-primary hover:underline"
+                    className="text-sm font-medium text-primary dark:text-solar-400 hover:underline"
                   >
                     Quên mật khẩu?
                   </Link>
@@ -98,6 +104,7 @@ const LoginPage: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
+                  className="bg-white/70 dark:bg-slate-800/70 dark:text-slate-50 dark:placeholder-slate-400"
                 />
               </div>
               <Button type="submit" className="w-full btn-primary" disabled={loading}>
@@ -105,13 +112,13 @@ const LoginPage: React.FC = () => {
               </Button>
             </form>
             <div className="my-6 flex items-center">
-              <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+              <div className="flex-grow border-t border-gray-300 dark:border-gray-500"></div>
               <span className="mx-4 flex-shrink text-sm text-gray-500 dark:text-gray-400">Hoặc tiếp tục với</span>
-              <div className="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+              <div className="flex-grow border-t border-gray-300 dark:border-gray-500"></div>
             </div>
             <Button 
               variant="outline" 
-              className="w-full" 
+              className="w-full bg-white/70 dark:bg-slate-800/70 dark:text-slate-200 dark:hover:bg-slate-700/90 dark:border-slate-600" 
               onClick={handleGoogleSignIn}
               disabled={loading}
             >
@@ -119,9 +126,9 @@ const LoginPage: React.FC = () => {
             </Button>
           </CardContent>
           <CardFooter className="text-center block">
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-sm text-gray-600 dark:text-slate-300">
               Chưa có tài khoản?{' '}
-              <Link to="/signup" className="font-medium text-primary hover:underline">
+              <Link to="/signup" className="font-medium text-primary dark:text-solar-400 hover:underline">
                 Đăng ký ngay
               </Link>
             </p>
