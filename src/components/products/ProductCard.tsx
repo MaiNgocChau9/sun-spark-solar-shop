@@ -1,13 +1,55 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import { ShoppingCart } from 'lucide-react';
 import { ProductType } from '@/types';
+import { useAuth } from '@/contexts/AuthContext'; // Import useAuth
+import { addToCart } from '@/services/cartService'; // Import addToCart
+import { useToast } from '@/components/ui/use-toast'; // Import useToast
 
 interface ProductCardProps {
   product: ProductType;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleAddToCart = async () => {
+    if (!currentUser) {
+      toast({
+        title: "Vui lòng đăng nhập",
+        description: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.",
+        variant: "destructive",
+      });
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
+      return;
+    }
+
+    try {
+      const productDataForCart = {
+        productId: product.id, // Ánh xạ id sang productId
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        // quantity sẽ được xử lý trong addToCart service, mặc định là 1
+      };
+      await addToCart(currentUser.uid, productDataForCart, 1);
+      toast({
+        title: "Thành công!",
+        description: `${product.name} đã được thêm vào giỏ hàng.`,
+      });
+      // TODO: Cập nhật số lượng trên icon giỏ hàng ở Navbar
+    } catch (error: any) {
+      console.error("Error adding to cart:", error);
+      toast({
+        title: "Lỗi",
+        description: error.message || "Không thể thêm sản phẩm vào giỏ hàng.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-solar-900 rounded-xl shadow-sm overflow-hidden card-hover">
       <Link to={`/products/${product.id}`} className="block relative">
@@ -69,7 +111,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
             Chi tiết
           </Link>
           <button 
-            className="flex items-center justify-center p-2 rounded bg-primary text-primary-foreground hover:bg-primary/90"
+            onClick={handleAddToCart}
+            className="flex items-center justify-center p-2 rounded bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             aria-label="Thêm vào giỏ hàng"
           >
             <ShoppingCart className="h-5 w-5" />

@@ -1,12 +1,41 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingCart, Sun, Search } from "lucide-react";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, ShoppingCart, Sun, Search, User, LogOut } from "lucide-react";
+import { useAuth } from '@/contexts/AuthContext';
+import { auth, signOutFirebase } from '@/firebase';
+import { getCart } from '@/services/cartService'; // Import getCart
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCartItemsCount = async () => {
+      if (currentUser) {
+        try {
+          const cart = await getCart(currentUser.uid);
+          const count = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+          setCartItemCount(count);
+        } catch (error) {
+          console.error("Error fetching cart for navbar:", error);
+          setCartItemCount(0); // Reset nếu có lỗi
+        }
+      } else {
+        setCartItemCount(0); // Reset khi không có user
+      }
+    };
+
+    fetchCartItemsCount();
+    // TODO: Để cập nhật real-time hơn, cần lắng nghe sự kiện thay đổi giỏ hàng
+    // hoặc sử dụng onSnapshot nếu CartContext được triển khai.
+    // Hiện tại, số lượng sẽ cập nhật khi currentUser thay đổi (đăng nhập/đăng xuất)
+    // hoặc khi Navbar được re-render vì lý do khác (ví dụ: route change).
+  }, [currentUser, location]); // Thêm location để có thể cập nhật khi điều hướng (dù không lý tưởng)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -79,22 +108,60 @@ const Navbar = () => {
 
           {/* Right Icons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button 
+            <button
               className="p-2 rounded-full hover:bg-muted transition-colors"
               aria-label="Tìm kiếm"
             >
               <Search className="h-5 w-5" />
             </button>
-            <Link 
-              to="/cart" 
+            <Link
+              to="/cart"
               className="p-2 rounded-full hover:bg-muted transition-colors relative"
               aria-label="Giỏ hàng"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                0
-              </span>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
             </Link>
+            {currentUser ? (
+              <>
+                <span className="text-sm text-foreground">
+                  Chào, {currentUser.displayName || currentUser.email?.split('@')[0]}
+                </span>
+                <button
+                  onClick={async () => {
+                    try {
+                      await signOutFirebase(auth); // auth cần được import từ firebase.ts hoặc truyền vào
+                      navigate('/'); // Điều hướng về trang chủ sau khi đăng xuất
+                    } catch (error) {
+                      console.error("Error signing out: ", error);
+                    }
+                  }}
+                  className="p-2 rounded-full hover:bg-muted transition-colors"
+                  aria-label="Đăng xuất"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  Đăng nhập
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                >
+                  Đăng ký
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -133,19 +200,65 @@ const Navbar = () => {
               {link.title}
             </Link>
           ))}
-          <div className="flex items-center space-x-4 mt-4 pt-4 border-t">
-            <button className="p-2 rounded-full hover:bg-muted transition-colors">
-              <Search className="h-5 w-5" />
-            </button>
-            <Link 
-              to="/cart" 
-              className="p-2 rounded-full hover:bg-muted transition-colors relative"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                0
-              </span>
-            </Link>
+          <div className="mt-4 pt-4 border-t">
+            {currentUser ? (
+              <>
+                <div className="flex items-center space-x-2 px-3 py-2">
+                  <User className="h-5 w-5 text-foreground" />
+                  <span className="text-sm font-medium text-foreground">
+                    {currentUser.displayName || currentUser.email}
+                  </span>
+                </div>
+                <button
+                  onClick={async () => {
+                    try {
+                      await signOutFirebase(auth); // auth cần được import từ firebase.ts hoặc truyền vào
+                      navigate('/');
+                      setIsOpen(false); // Đóng menu sau khi đăng xuất
+                    } catch (error) {
+                      console.error("Error signing out: ", error);
+                    }
+                  }}
+                  className="w-full text-left block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
+                >
+                  Đăng xuất
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
+                >
+                  Đăng nhập
+                </Link>
+                <Link
+                  to="/signup"
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
+                >
+                  Đăng ký
+                </Link>
+              </>
+            )}
+            <div className="flex items-center space-x-4 mt-4 pt-4 border-t">
+              <button className="p-2 rounded-full hover:bg-muted transition-colors">
+                <Search className="h-5 w-5" />
+              </button>
+              <Link
+                to="/cart"
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full hover:bg-muted transition-colors relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                 {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

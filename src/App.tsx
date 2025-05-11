@@ -13,6 +13,8 @@ import About from "./pages/About";
 import Solutions from "./pages/Solutions";
 import NotFound from "./pages/NotFound";
 import CartPage from "./pages/Cart";
+import LoginPage from "./pages/LoginPage"; // Thêm import
+import SignupPage from "./pages/SignupPage"; // Thêm import
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/login" element={<LoginPage />} /> {/* Route đăng nhập */}
+          <Route path="/signup" element={<SignupPage />} /> {/* Route đăng ký */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

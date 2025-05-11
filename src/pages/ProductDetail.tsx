@@ -1,8 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Thêm useNavigate
 import { Star, ShoppingCart, ArrowLeft, Check } from 'lucide-react';
-import { products } from '@/data/products';
+import { products } from '@/data/products'; // Dữ liệu sản phẩm hiện tại là local
+// Cân nhắc: Nếu sản phẩm cũng được lấy từ Firestore, logic fetch product sẽ khác
+import { useAuth } from '@/contexts/AuthContext';
+import { addToCart } from '@/services/cartService';
+import { useToast } from '@/components/ui/use-toast';
 import { ProductType } from '@/types';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -15,7 +19,10 @@ const ProductDetail = () => {
   const [activeImage, setActiveImage] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState<ProductType[]>([]);
-  
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   useEffect(() => {
     // Scroll to top on page load
     window.scrollTo(0, 0);
@@ -45,6 +52,42 @@ const ProductDetail = () => {
   const handleQuantityChange = (value: number) => {
     if (value >= 1 && value <= (product?.stock || 1)) {
       setQuantity(value);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!product) return; // Should not happen if button is enabled
+
+    if (!currentUser) {
+      toast({
+        title: "Vui lòng đăng nhập",
+        description: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.",
+        variant: "destructive",
+      });
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
+      return;
+    }
+
+    try {
+      const productDataForCart = {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image, // Hoặc activeImage nếu muốn ảnh đang chọn
+      };
+      await addToCart(currentUser.uid, productDataForCart, quantity);
+      toast({
+        title: "Thành công!",
+        description: `${quantity} x ${product.name} đã được thêm vào giỏ hàng.`,
+      });
+      // TODO: Cập nhật số lượng trên icon giỏ hàng ở Navbar
+    } catch (error: any) {
+      console.error("Error adding to cart:", error);
+      toast({
+        title: "Lỗi",
+        description: error.message || "Không thể thêm sản phẩm vào giỏ hàng.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -251,6 +294,7 @@ const ProductDetail = () => {
               
               <div className="flex flex-wrap gap-4">
                 <button 
+                  onClick={handleAddToCart}
                   className="btn-primary flex-1 md:flex-none md:min-w-[200px]"
                   disabled={!product.stock || product.stock <= 0}
                 >
@@ -259,6 +303,7 @@ const ProductDetail = () => {
                 </button>
                 
                 <button 
+                  // TODO: Implement Buy Now functionality
                   className="btn-secondary flex-1 md:flex-none md:min-w-[200px]"
                   disabled={!product.stock || product.stock <= 0}
                 >
