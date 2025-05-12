@@ -35,8 +35,24 @@ const LoginPage: React.FC = () => {
       await signInWithEmailAndPassword(auth, email, password);
       // Chuyển hướng đã được xử lý bởi useEffect
     } catch (err: any) {
-      setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra thông tin.');
-      console.error("Login error:", err);
+      let friendlyError = 'Đăng nhập thất bại. Vui lòng kiểm tra thông tin.';
+      switch (err.code) {
+        case 'auth/user-not-found':
+          friendlyError = 'Không tìm thấy tài khoản nào với địa chỉ email này.';
+          break;
+        case 'auth/wrong-password':
+          friendlyError = 'Mật khẩu không đúng.';
+          break;
+        case 'auth/invalid-email':
+          friendlyError = 'Địa chỉ email không hợp lệ.';
+          break;
+        case 'auth/user-disabled':
+          friendlyError = 'Tài khoản người dùng đã bị vô hiệu hóa.';
+          break;
+        default:
+          console.error("Login error:", err);
+      }
+      setError(friendlyError);
     } finally {
       setLoading(false);
     }

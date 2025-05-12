@@ -50,8 +50,21 @@ const SignupPage: React.FC = () => {
       // });
       // Chuyển hướng đã được xử lý bởi useEffect
     } catch (err: any) {
-      setError(err.message || 'Không thể tạo tài khoản. Vui lòng thử lại.');
-      console.error("Signup error:", err);
+      let friendlyError = 'Không thể tạo tài khoản. Vui lòng thử lại.';
+      switch (err.code) {
+        case 'auth/email-already-in-use':
+          friendlyError = 'Địa chỉ email này đã được sử dụng.';
+          break;
+        case 'auth/invalid-email':
+          friendlyError = 'Địa chỉ email không hợp lệ.';
+          break;
+        case 'auth/weak-password':
+          friendlyError = 'Mật khẩu quá yếu. Vui lòng sử dụng mật khẩu mạnh hơn (ít nhất 6 ký tự).';
+          break;
+        default:
+          console.error("Signup error:", err);
+      }
+      setError(friendlyError);
     } finally {
       setLoading(false);
     }
