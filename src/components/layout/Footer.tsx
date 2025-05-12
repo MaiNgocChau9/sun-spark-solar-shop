@@ -170,7 +170,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Ấp 4, xã Thạnh Phú, huyện Vĩnh Cửu, tỉnh Đồng Nai
+                  Cửa hàng Điện nước Diệp Châu, Ấp 4, xã Thạnh Phú, huyện Vĩnh Cửu, tỉnh Đồng Nai
                 </a>
               </li>
               <li className="flex items-center">

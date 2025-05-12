@@ -7,7 +7,7 @@ import {
     signOut, 
     onAuthStateChanged, 
     GoogleAuthProvider, 
-    signInWithPopup 
+    signInWithPopup
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 // Thay thế firestore-lite bằng firestore đầy đủ
 import { 
@@ -31,14 +31,15 @@ import {
 // import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"; // Nếu cần Storage
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"; // Nếu cần Analytics
 
-// Your web app's Firebase configuration
-// **LƯU Ý QUAN TRỌNG VỀ API KEY VÀ BẢO MẬT**
-// API Key này là public và an toàn để đưa vào code frontend.
-// Tuy nhiên, hãy ĐẢM BẢO rằng bạn đã cấu hình:
-// 1. App Check: Để xác minh các yêu cầu đến từ ứng dụng hợp lệ của bạn.
-// 2. Security Rules (cho Firestore, Realtime Database, Storage): Để kiểm soát quyền truy cập dữ liệu.
-// Truy cập Firebase Console để cấu hình các biện pháp bảo mật này.
-const firebaseConfig = {
+/**
+ * Your web app's Firebase configuration
+ * API Key này là public và an toàn để đưa vào code frontend.
+ * Tuy nhiên, hãy ĐẢM BẢO rằng bạn đã cấu hình:
+ * 1. App Check: Để xác minh các yêu cầu đến từ ứng dụng hợp lệ của bạn.
+ * 2. Security Rules (cho Firestore, Realtime Database, Storage): Để kiểm soát quyền truy cập dữ liệu.
+ * Truy cập Firebase Console để cấu hình các biện pháp bảo mật này.
+ */
+export const firebaseConfig = {
   apiKey: "AIzaSyB2IxYD0GPgdBczj-H9KIGhUwfxI3dBGTs", 
   authDomain: "website-52770.firebaseapp.com",
   projectId: "website-52770",
@@ -60,6 +61,7 @@ export const db = getFirestore(app);
 
 export {
   // Auth exports
+  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as signOutFirebase, // Đổi tên để tránh trùng lặp nếu có hàm signOut khác

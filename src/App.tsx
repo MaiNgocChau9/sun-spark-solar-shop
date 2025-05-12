@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import CartPage from "./pages/Cart";
 import LoginPage from "./pages/LoginPage"; // Thêm import
 import SignupPage from "./pages/SignupPage"; // Thêm import
+import ForgotPasswordPage from "./pages/ForgotPasswordPage"; // Import ForgotPasswordPage
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} /> {/* Route đăng nhập */}
           <Route path="/signup" element={<SignupPage />} /> {/* Route đăng ký */}
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} /> {/* Route quên mật khẩu */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
