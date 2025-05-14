@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { blogPosts } from '@/data/blog';
 import { BlogPostType } from '@/types';
@@ -10,20 +10,37 @@ import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/chatbot/Chatbot";
 
 const Blog = () => {
+  const [searchParams] = useSearchParams();
   const [posts, setPosts] = useState<BlogPostType[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPostType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Get search query from URL if it exists
+  const searchQueryFromUrl = searchParams.get('search') || '';
+  const [searchQuery, setSearchQuery] = useState(searchQueryFromUrl);
   const [selectedTag, setSelectedTag] = useState('');
   
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
       setPosts(blogPosts);
-      setFilteredPosts(blogPosts);
+      
+      // Apply search from URL if exists
+      if (searchQueryFromUrl) {
+        const searchLower = searchQueryFromUrl.toLowerCase();
+        const filtered = blogPosts.filter(post => 
+          post.title.toLowerCase().includes(searchLower) ||
+          post.excerpt.toLowerCase().includes(searchLower) ||
+          post.content.toLowerCase().includes(searchLower)
+        );
+        setFilteredPosts(filtered);
+      } else {
+        setFilteredPosts(blogPosts);
+      }
+      
       setLoading(false);
     }, 500);
-  }, []);
+  }, [searchQueryFromUrl]);
   
   // Extract all unique tags
   const allTags = [...new Set(blogPosts.flatMap(post => post.tags || []))];

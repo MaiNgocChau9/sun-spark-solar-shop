@@ -20,6 +20,7 @@ interface FilterProps {
     powerRange?: { min: number; max: number };
     search?: string;
   }) => void;
+  initialSearch?: string;
 }
 
 const ProductFilter = ({
@@ -27,6 +28,7 @@ const ProductFilter = ({
   priceRanges,
   powerRanges,
   onFilterChange,
+  initialSearch = '',
 }: FilterProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedPriceRange, setSelectedPriceRange] = useState<{
@@ -37,8 +39,15 @@ const ProductFilter = ({
     min: number;
     max: number;
   } | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Apply initial search if provided
+  useState(() => {
+    if (initialSearch) {
+      onFilterChange({ search: initialSearch });
+    }
+  });
 
   const handleCategoryChange = (category: string) => {
     const newCategory = selectedCategory === category ? '' : category;

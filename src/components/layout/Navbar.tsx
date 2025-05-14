@@ -1,333 +1,293 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingCart, Sun, Search, User, LogOut } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Menu, ShoppingCart, User, X } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { useAuth } from '@/contexts/AuthContext';
-import { auth, signOutFirebase } from '@/firebase';
-import { getCart } from '@/services/cartService';
+import { signOutFirebase } from '@/firebase';
+import { useToast } from '@/hooks/use-toast';
+import SearchBox from '@/components/layout/SearchBox';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { currentUser } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
-  const [cartItemCount, setCartItemCount] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const isAuthenticated = !!currentUser;
 
+  // Close menus when clicking outside
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showUserMenu && !target.closest('.user-menu-container')) {
+        setShowUserMenu(false);
+      }
     };
 
-    window.addEventListener('resize', handleResize);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [showUserMenu]);
 
+  // Fetch cart count
   useEffect(() => {
-    const fetchCartItemsCount = async () => {
-      if (currentUser) {
-        try {
-          const cart = await getCart(currentUser.uid);
-          const count = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-          setCartItemCount(count);
-        } catch (error) {
-          console.error("Error fetching cart for navbar:", error);
-          setCartItemCount(0);
-        }
-      } else {
-        setCartItemCount(0);
+    const fetchCartCount = async () => {
+      if (!currentUser) {
+        setCartCount(0);
+        return;
+      }
+
+      try {
+        // This would be replaced with actual cart data fetching
+        // For now, just simulate a cart count
+        setCartCount(3);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
       }
     };
 
-    fetchCartItemsCount();
-  }, [currentUser, location]);
+    fetchCartCount();
+  }, [currentUser]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const navLinks = [
-    { title: 'Trang chủ', path: '/' },
-    { title: 'Sản phẩm', path: '/products' },
-    { title: 'Giải pháp', path: '/solutions' },
-    { title: 'Blog', path: '/blog' },
-    { title: 'Về chúng tôi', path: '/about' },
-    { title: 'Liên hệ', path: '/contact' },
-  ];
-
-  const renderAuthButtons = () => {
-    if (currentUser) {
-      // Đã đăng nhập
-      if (windowWidth >= 1240) { // Thay đổi breakpoint từ 1200px thành 1240px
-        // Màn hình lớn: Hiển thị tên user và nút Đăng xuất
-        return (
-          <>
-            <span className="text-sm text-foreground">
-              Chào, {currentUser.displayName || currentUser.email?.split('@')[0]}
-            </span>
-            <button
-              onClick={async () => {
-                try {
-                  await signOutFirebase(auth);
-                  navigate('/');
-                } catch (error) {
-                  console.error("Error signing out: ", error);
-                }
-              }}
-              className="p-2 rounded-full hover:bg-muted transition-colors"
-              aria-label="Đăng xuất"
-            >
-              <LogOut className="h-5 w-5" />
-            </button>
-          </>
-        );
-      } else { // Điều kiện này bao gồm 1100px <= windowWidth < 1240px (do logic hiển thị desktop menu)
-        // Màn hình trung bình: Chỉ hiển thị tên user (hoặc icon) và nút Đăng xuất
-         return (
-          <>
-             <span className="text-sm text-foreground hidden lg:inline"> 
-               Chào, {currentUser.displayName || currentUser.email?.split('@')[0]}
-             </span>
-             <button
-               onClick={async () => {
-                 try {
-                   await signOutFirebase(auth);
-                   navigate('/');
-                 } catch (error) {
-                   console.error("Error signing out: ", error);
-                 }
-               }}
-               className="p-2 rounded-full hover:bg-muted transition-colors"
-               aria-label="Đăng xuất"
-             >
-               <LogOut className="h-5 w-5" />
-             </button>
-           </>
-         );
-      }
-    } else {
-      // Chưa đăng nhập
-      if (windowWidth >= 1240) { // Thay đổi breakpoint từ 1200px thành 1240px
-        // Màn hình lớn: Hiển thị cả Đăng nhập và Đăng ký
-        return (
-          <>
-            <Link
-              to="/login"
-              className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              to="/signup"
-              className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-            >
-              Đăng ký
-            </Link>
-          </>
-        );
-      } else { // Điều kiện này bao gồm 1100px <= windowWidth < 1240px
-        // Màn hình trung bình: Chỉ hiển thị nút Đăng nhập
-        return (
-          <Link
-            to="/login"
-            className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-          >
-            Đăng nhập
-          </Link>
-        );
-      }
+  const handleLogout = async () => {
+    try {
+      await signOutFirebase();
+      toast({
+        title: "Đăng xuất thành công",
+        description: "Hẹn gặp lại bạn lần sau!",
+      });
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        title: "Lỗi đăng xuất",
+        description: "Đã có lỗi xảy ra khi đăng xuất",
+        variant: "destructive",
+      });
     }
   };
 
+  const navLinks = [
+    { to: "/", label: "Trang chủ" },
+    { to: "/products", label: "Sản phẩm" },
+    { to: "/solutions", label: "Giải pháp" },
+    { to: "/blog", label: "Blog" },
+    { to: "/about", label: "Về chúng tôi" },
+    { to: "/contact", label: "Liên hệ" },
+  ];
+
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/90 dark:bg-solar-900/90 backdrop-blur-md shadow-sm'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-2xl font-bold text-primary"
-          >
-            <Sun className="h-8 w-8" />
-            <span>Solar Diệp Châu</span>
+    <header className="fixed w-full top-0 left-0 right-0 z-40 bg-white dark:bg-black dark:text-white">
+      <div className="container mx-auto py-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/" className="text-2xl font-bold text-primary flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-8 w-8">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            SolarTech
           </Link>
-
-          {/* Desktop Navigation & Right Icons Container */}
-          {windowWidth >= 1130 && ( // Thay đổi breakpoint từ 1100px thành 1130px
-            <div className="flex items-center">
-              {/* Desktop Navigation Links */}
-              <div className="hidden lg:flex items-center space-x-6 mr-6"> {/* lg:flex để đảm bảo nó ẩn trên tablet nếu cần */}
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`font-medium transition-colors hover:text-primary ${
-                      location.pathname === link.path
-                        ? 'text-primary'
-                        : 'text-foreground'
-                    }`}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Right Icons (Search, Cart, Auth) */}
-              {/* Điều kiện windowWidth >= 900 đã được xử lý trong renderAuthButtons và logic chung */}
-              <div className="flex items-center space-x-4">
-                <button
-                  className="p-2 rounded-full hover:bg-muted transition-colors"
-                  aria-label="Tìm kiếm"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
-                <Link
-                  to="/cart"
-                  className="p-2 rounded-full hover:bg-muted transition-colors relative"
-                  aria-label="Giỏ hàng"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
-                {renderAuthButtons()}
-              </div>
-            </div>
-          )}
-
-          {/* Mobile Menu Button */}
-          {windowWidth < 1130 && ( // Thay đổi breakpoint từ 1100px thành 1130px
-            <div className="flex items-center"> {/* Không cần md:hidden ở đây nữa */}
-              <button
-                onClick={toggleMenu}
-                className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+          <div className="hidden md:flex ml-10 space-x-2">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-md transition-colors ${
+                    isActive
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`
+                }
               >
-                {isOpen ? (
-                  <X className="h-6 w-6" aria-hidden="true" />
-                ) : (
-                  <Menu className="h-6 w-6" aria-hidden="true" />
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+        </div>
+
+        <div className="hidden md:flex items-center gap-x-6">
+          <div className="w-64">
+            <SearchBox />
+          </div>
+          
+          <div className="flex items-center gap-x-4">
+            <ThemeToggle />
+            
+            <Link
+              to="/cart"
+              className="inline-flex relative rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 p-2"
+            >
+              <ShoppingCart size={24} />
+              {isAuthenticated && cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full p-1"
+                >
+                  <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border">
+                    {currentUser?.photoURL ? (
+                      <img src={currentUser.photoURL} alt={currentUser.displayName || 'User'} />
+                    ) : (
+                      <User size={20} />
+                    )}
+                  </div>
+                </button>
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border dark:border-gray-700">
+                    <div className="py-1">
+                      <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
+                        {currentUser?.displayName || currentUser?.email}
+                      </div>
+                      
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Tài khoản
+                      </Link>
+                      
+                      <Link
+                        to="/orders"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Đơn hàng của tôi
+                      </Link>
+                      
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Quản trị
+                      </Link>
+                      
+                      <button
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={handleLogout}
+                      >
+                        Đăng xuất
+                      </button>
+                    </div>
+                  </div>
                 )}
-              </button>
-            </div>
-          )}
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="flex items-center gap-x-1 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium"
+              >
+                <User size={20} />
+                <span>Đăng nhập</span>
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <div className="md:hidden flex items-center space-x-4">
+          <Link
+            to="/cart"
+            className="inline-flex relative rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 p-2"
+          >
+            <ShoppingCart size={24} />
+            {isAuthenticated && cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+          
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-gray-700 dark:text-gray-300 hover:text-primary"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu Content */}
-      {windowWidth < 1130 && ( // Thay đổi breakpoint từ 1100px thành 1130px
-        <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${ // Bỏ md:hidden
-            isOpen ? 'max-h-screen bg-background shadow-lg' : 'max-h-0'
-          }`}
-        >
-          <div className="space-y-1 px-4 pb-5 pt-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`block py-2 px-3 rounded-md font-medium ${
-                  location.pathname === link.path
-                    ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-muted text-foreground'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.title}
-              </Link>
-            ))}
-            <div className="mt-4 pt-4 border-t">
-              {currentUser ? (
-                <>
-                  <div className="flex items-center space-x-2 px-3 py-2">
-                    <User className="h-5 w-5 text-foreground" />
-                    <span className="text-sm font-medium text-foreground">
-                      {currentUser.displayName || currentUser.email}
-                    </span>
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800">
+          <div className="container py-4">
+            <div className="mb-4">
+              <SearchBox />
+            </div>
+            <nav className="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-md transition-colors ${
+                      isActive
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    }`
+                  }
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              
+              <div className="h-px bg-gray-200 dark:bg-gray-800 my-2"></div>
+              
+              <div className="flex items-center justify-between px-4 py-3">
+                <ThemeToggle />
+                
+                {isAuthenticated ? (
+                  <div className="flex items-center gap-x-2">
+                    <Link
+                      to="/profile"
+                      className="px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Tài khoản
+                    </Link>
+                    <button
+                      className="px-3 py-2 rounded-md text-red-600"
+                      onClick={() => {
+                        handleLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      Đăng xuất
+                    </button>
                   </div>
-                  <button
-                    onClick={async () => {
-                      try {
-                        await signOutFirebase(auth);
-                        navigate('/');
-                        setIsOpen(false);
-                      } catch (error) {
-                        console.error("Error signing out: ", error);
-                      }
-                    }}
-                    className="w-full text-left block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
-                  >
-                    Đăng xuất
-                  </button>
-                </>
-              ) : (
-                <>
+                ) : (
                   <Link
                     to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
+                    className="px-4 py-2 bg-primary text-white rounded-md font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     Đăng nhập
                   </Link>
-                  <Link
-                    to="/signup"
-                    onClick={() => setIsOpen(false)}
-                    className="block py-2 px-3 rounded-md font-medium hover:bg-muted text-foreground"
-                  >
-                    Đăng ký
-                  </Link>
-                </>
-              )}
-              <div className="flex items-center space-x-4 mt-4 pt-4 border-t">
-                <button className="p-2 rounded-full hover:bg-muted transition-colors">
-                  <Search className="h-5 w-5" />
-                </button>
-                <Link
-                  to="/cart"
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-full hover:bg-muted transition-colors relative"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
+                )}
               </div>
-            </div>
+            </nav>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

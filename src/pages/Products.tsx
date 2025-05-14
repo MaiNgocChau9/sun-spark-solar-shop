@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { products } from '@/data/products';
 import { ProductType } from '@/types';
 import ProductFilter from '@/components/products/ProductFilter';
@@ -9,18 +10,35 @@ import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/chatbot/Chatbot";
 
 const Products = () => {
+  const [searchParams] = useSearchParams();
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Get search query from URL if it exists
+  const searchQueryFromUrl = searchParams.get('search') || '';
 
   useEffect(() => {
     // Simulate loading data
     const timer = setTimeout(() => {
-      setFilteredProducts(products);
+      let filtered = [...products];
+      
+      // Apply search from URL parameter if exists
+      if (searchQueryFromUrl) {
+        const searchLower = searchQueryFromUrl.toLowerCase();
+        filtered = filtered.filter(
+          product => 
+            product.name.toLowerCase().includes(searchLower) || 
+            product.description.toLowerCase().includes(searchLower) ||
+            product.category.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      setFilteredProducts(filtered);
       setLoading(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [searchQueryFromUrl]);
 
   // Extract unique categories
   const categories = [...new Set(products.map(product => product.category))];
@@ -101,6 +119,7 @@ const Products = () => {
             priceRanges={priceRanges}
             powerRanges={powerRanges}
             onFilterChange={handleFilterChange}
+            initialSearch={searchQueryFromUrl}
           />
 
           {loading ? (

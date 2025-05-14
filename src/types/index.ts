@@ -36,3 +36,42 @@ export interface BlogPostType {
   readingTime: number;
   relatedPosts?: string[];
 }
+
+// Order Types
+export interface OrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+export interface OrderType {
+  id: string;
+  userId: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: string;
+  items: OrderItem[];
+  totalAmount: number;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  orderDate: string;
+  notes?: string;
+}
+
+// Cart Types
+export interface CartItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+export interface CartType {
+  userId: string;
+  items: CartItem[];
+  totalAmount: number;
+  updatedAt: string;
+}
