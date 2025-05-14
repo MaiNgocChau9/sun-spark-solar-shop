@@ -27,8 +27,7 @@ import {
     writeBatch,
     serverTimestamp,
     increment,
-    FieldValue,
-    addDoc // Added missing addDoc export
+    FieldValue
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"; 
 // import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"; // Nếu cần Storage
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"; // Nếu cần Analytics
@@ -61,6 +60,17 @@ export const db = getFirestore(app);
 // export const storage = getStorage(app); // Nếu cần
 // export const analytics = getAnalytics(app); // Nếu cần
 
+// Create a custom addDoc function since it's not exported from the CDN
+export const addDoc = (collectionRef: any, data: any) => {
+  const newDocRef = doc(collectionRef);
+  return setDoc(newDocRef, data).then(() => {
+    return {
+      id: newDocRef.id,
+      path: newDocRef.path,
+    };
+  });
+};
+
 export {
   // Auth exports
   getAuth,
@@ -85,8 +95,7 @@ export {
   writeBatch,
   serverTimestamp,
   increment,
-  FieldValue,
-  addDoc // Added export of addDoc
+  FieldValue
 };
 
 export default app;

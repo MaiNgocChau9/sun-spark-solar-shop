@@ -1,3 +1,4 @@
+
 import { 
   collection, 
   getDoc, 
@@ -6,9 +7,10 @@ import {
   doc, 
   query, 
   where, 
-  serverTimestamp 
+  serverTimestamp,
+  addDoc
 } from '@/firebase';
-import { db, addDoc } from '@/firebase'; // Changed to import addDoc directly
+import { db } from '@/firebase';
 import { OrderType, CartItem } from '@/types';
 
 // Create a new order

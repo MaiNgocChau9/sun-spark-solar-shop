@@ -1,3 +1,4 @@
+
 /// <reference types="vite/client" />
 
 declare module "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js" {
@@ -13,10 +14,6 @@ declare module "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js" {
   export const GoogleAuthProvider: any;
   export const signInWithPopup: any;
 }
-
-// declare module "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore-lite.js" {
-//   export const getFirestore: any;
-// }
 
 declare module "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js" {
   export const getFirestore: any;
