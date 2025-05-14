@@ -3,7 +3,7 @@ import { ShieldCheck, Leaf, BarChart, Clock } from 'lucide-react';
 
 const AboutSection = () => {
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20 bg-muted/30 dark:bg-gray-900">
       <div className="container">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
@@ -13,19 +13,19 @@ const AboutSection = () => {
                 alt="Về Solar Diệp Châu"
                 className="rounded-lg shadow-lg w-full h-auto object-cover"
               />
-              <div className="absolute -bottom-6 -right-6 bg-white dark:bg-solar-900 shadow-lg rounded-lg p-4 w-32 h-32 flex flex-col items-center justify-center">
+              <div className="absolute -bottom-6 -right-6 bg-card dark:bg-gray-800 shadow-lg rounded-lg p-4 w-32 h-32 flex flex-col items-center justify-center">
                 <span className="text-primary text-2xl font-bold">10+</span>
-                <span className="text-center text-sm">Năm kinh nghiệm</span>
+                <span className="text-center text-sm text-muted-foreground dark:text-gray-400">Năm kinh nghiệm</span>
               </div>
             </div>
           </div>
 
           <div className="order-1 md:order-2">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground dark:text-white">
               Về <span className="text-primary">Solar Diệp Châu</span>
             </h2>
             
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground dark:text-gray-300 mb-6">
               Solar Diệp Châu là nhà cung cấp hàng đầu các giải pháp năng lượng mặt trời tại Việt Nam. 
               Với hơn 10 năm kinh nghiệm, chúng tôi tự hào cung cấp các sản phẩm chất lượng cao
               và dịch vụ chuyên nghiệp để đáp ứng nhu cầu năng lượng tái tạo của khách hàng.
@@ -37,8 +37,8 @@ const AboutSection = () => {
                   <ShieldCheck className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Chất lượng cao</h3>
-                  <p className="text-sm text-muted-foreground">Sản phẩm được nhập khẩu và kiểm định chặt chẽ</p>
+                  <h3 className="font-semibold mb-1 text-foreground dark:text-white">Chất lượng cao</h3>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Sản phẩm được nhập khẩu và kiểm định chặt chẽ</p>
                 </div>
               </div>
               
@@ -47,8 +47,8 @@ const AboutSection = () => {
                   <Leaf className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Thân thiện môi trường</h3>
-                  <p className="text-sm text-muted-foreground">Giúp giảm thiểu lượng khí thải carbon</p>
+                  <h3 className="font-semibold mb-1 text-foreground dark:text-white">Thân thiện môi trường</h3>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Giúp giảm thiểu lượng khí thải carbon</p>
                 </div>
               </div>
               
@@ -57,8 +57,8 @@ const AboutSection = () => {
                   <BarChart className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Tiết kiệm chi phí</h3>
-                  <p className="text-sm text-muted-foreground">Giảm hóa đơn điện hàng tháng đáng kể</p>
+                  <h3 className="font-semibold mb-1 text-foreground dark:text-white">Tiết kiệm chi phí</h3>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Giảm hóa đơn điện hàng tháng đáng kể</p>
                 </div>
               </div>
               
@@ -67,8 +67,8 @@ const AboutSection = () => {
                   <Clock className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Bền bỉ lâu dài</h3>
-                  <p className="text-sm text-muted-foreground">Sản phẩm có tuổi thọ cao và bảo hành dài hạn</p>
+                  <h3 className="font-semibold mb-1 text-foreground dark:text-white">Bền bỉ lâu dài</h3>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Sản phẩm có tuổi thọ cao và bảo hành dài hạn</p>
                 </div>
               </div>
             </div>

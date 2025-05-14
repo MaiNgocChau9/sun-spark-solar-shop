@@ -103,14 +103,14 @@ const Blog = () => {
                 <input
                   type="text"
                   placeholder="Tìm kiếm bài viết..."
-                  className="pl-10 pr-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                  className="pl-10 pr-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all bg-background dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </form>
               
               <div className="flex flex-wrap gap-2">
-                <span className="text-sm text-muted-foreground self-center mr-2">
+                <span className="text-sm text-muted-foreground dark:text-gray-400 self-center mr-2">
                   Lọc theo chủ đề:
                 </span>
                 {allTags.map(tag => (
@@ -120,7 +120,7 @@ const Blog = () => {
                     className={`px-3 py-1 text-sm rounded-full transition-colors ${
                       selectedTag === tag
                         ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted hover:bg-muted/80'
+                        : 'bg-muted hover:bg-muted/80 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                     }`}
                   >
                     {tag}

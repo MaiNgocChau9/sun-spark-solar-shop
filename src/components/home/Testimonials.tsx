@@ -91,12 +91,12 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-solar-50 to-solar-200">
+    <section className="py-20 bg-gradient-to-b from-solar-50 to-solar-200 dark:from-gray-900 dark:to-gray-800">
       <div className="container">
-        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-foreground dark:text-white">
           Khách hàng nói gì về chúng tôi
         </h2>
-        <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
+        <p className="text-muted-foreground dark:text-gray-300 text-center max-w-2xl mx-auto mb-12">
           Khám phá trải nghiệm thực tế từ những khách hàng đã sử dụng các giải pháp năng lượng mặt trời của Solar Diệp Châu
         </p>
 
@@ -105,7 +105,7 @@ const Testimonials = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="relative bg-white dark:bg-solar-900 rounded-2xl shadow-lg p-8">
+          <div className="relative bg-card dark:bg-gray-800 rounded-2xl shadow-lg p-8">
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
@@ -123,15 +123,15 @@ const Testimonials = () => {
                     />
                   </div>
                   <div className="flex-1">
-                    <div className="mb-2 text-amber-500">
+                    <div className="mb-2 text-amber-500 dark:text-amber-400">
                       {"★".repeat(testimonial.rating)}
                       {"☆".repeat(5 - testimonial.rating)}
                     </div>
-                    <blockquote className="text-lg italic mb-4">
+                    <blockquote className="text-lg italic mb-4 text-foreground dark:text-gray-300">
                       "{testimonial.quote}"
                     </blockquote>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="font-semibold text-foreground dark:text-white">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground dark:text-gray-400">
                       {testimonial.role}
                     </div>
                   </div>
@@ -141,7 +141,7 @@ const Testimonials = () => {
 
             {/* Navigation arrows */}
             <button
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white dark:bg-solar-900 rounded-full p-2 shadow-md z-20 hover:bg-muted transition-colors"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-card dark:bg-gray-700 rounded-full p-2 shadow-md z-20 hover:bg-muted transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 prevSlide();
@@ -154,7 +154,7 @@ const Testimonials = () => {
               </svg>
             </button>
             <button
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white dark:bg-solar-900 rounded-full p-2 shadow-md z-20 hover:bg-muted transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-card dark:bg-gray-700 rounded-full p-2 shadow-md z-20 hover:bg-muted transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 nextSlide();
@@ -174,7 +174,7 @@ const Testimonials = () => {
               <button
                 key={index}
                 className={`w-3 h-3 rounded-full transition-colors ${
-                  index === activeIndex ? 'bg-primary' : 'bg-muted-foreground/30'
+                  index === activeIndex ? 'bg-primary' : 'bg-muted-foreground/30 dark:bg-gray-600'
                 }`}
                 onClick={() => handleDotClick(index)}
                 aria-label={`Go to testimonial ${index + 1}`}

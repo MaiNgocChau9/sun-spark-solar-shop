@@ -32,7 +32,7 @@ const FeaturedProducts = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+            <div key={product.id} className="bg-card dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden card-hover">
               <Link to={`/products/${product.id}`} className="block relative">
                 <span className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-medium py-1 px-2 rounded-full">
                   Nổi bật
@@ -46,12 +46,12 @@ const FeaturedProducts = () => {
               <div className="p-5">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h3 className="font-bold text-lg">
+                    <h3 className="font-bold text-lg text-foreground dark:text-white">
                       <Link to={`/products/${product.id}`} className="hover:text-primary transition-colors">
                         {product.name}
                       </Link>
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground dark:text-gray-400">
                       {product.category}
                     </p>
                   </div>
@@ -60,10 +60,10 @@ const FeaturedProducts = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center text-sm text-amber-500 mb-4">
+                <div className="flex items-center text-sm text-amber-500 dark:text-amber-400 mb-4">
                   {"★".repeat(product.rating)}
                   {"☆".repeat(5 - product.rating)}
-                  <span className="text-muted-foreground ml-1">({product.reviewCount})</span>
+                  <span className="text-muted-foreground dark:text-gray-400 ml-1">({product.reviewCount})</span>
                 </div>
                 
                 <div className="mt-4 flex space-x-2">

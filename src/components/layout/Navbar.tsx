@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Menu, ShoppingCart, User, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useAuth } from '@/contexts/AuthContext';
-import { signOutFirebase } from '@/firebase';
+import { signOutFirebase, auth } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import SearchBox from '@/components/layout/SearchBox';
 
@@ -53,7 +53,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await signOutFirebase();
+      // signOutFirebase cần truyền vào auth
+      await signOutFirebase(auth);
       toast({
         title: "Đăng xuất thành công",
         description: "Hẹn gặp lại bạn lần sau!",
@@ -136,7 +137,7 @@ const Navbar = () => {
             </Link>
 
             {isAuthenticated ? (
-              <div className="relative">
+              <div className="relative user-menu-container">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full p-1"
@@ -156,29 +157,17 @@ const Navbar = () => {
                         {currentUser?.displayName || currentUser?.email}
                       </div>
                       
-                      <Link
-                        to="/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Tài khoản
-                      </Link>
                       
-                      <Link
-                        to="/orders"
-                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Đơn hàng của tôi
-                      </Link>
-                      
-                      <Link
-                        to="/admin"
-                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Quản trị
-                      </Link>
+                      {/* Chỉ hiển thị cho admin, ví dụ kiểm tra email */}
+                      {currentUser?.email === 'admin@gmail.com' && (
+                        <Link
+                          to="/admin"
+                          className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          Quản trị
+                        </Link>
+                      )}
                       
                       <button
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -255,14 +244,17 @@ const Navbar = () => {
                 <ThemeToggle />
                 
                 {isAuthenticated ? (
-                  <div className="flex items-center gap-x-2">
-                    <Link
-                      to="/profile"
-                      className="px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Tài khoản
-                    </Link>
+                  <div className="flex flex-col gap-y-1">
+                    {/* Chỉ hiển thị cho admin, ví dụ kiểm tra email */}
+                    {currentUser?.email === 'admin@gmail.com' && (
+                      <Link
+                        to="/admin"
+                        className="px-3 py-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Quản trị
+                      </Link>
+                    )}
                     <button
                       className="px-3 py-2 rounded-md text-red-600"
                       onClick={() => {

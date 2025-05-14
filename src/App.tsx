@@ -18,6 +18,8 @@ import CartPage from "./pages/Cart";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import UserOrders from "./pages/UserOrders";
+import SearchPage from "./pages/Search";
 
 // Admin routes
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -45,6 +47,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/orders" element={<UserOrders />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />

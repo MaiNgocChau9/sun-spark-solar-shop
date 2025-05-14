@@ -35,7 +35,7 @@ const BlogPreview = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {recentPosts.map((post) => (
-            <article key={post.id} className="bg-white dark:bg-solar-900 rounded-xl shadow-sm overflow-hidden card-hover">
+            <article key={post.id} className="bg-card dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden card-hover">
               <Link to={`/blog/${post.slug}`} className="block">
                 <img 
                   src={post.coverImage} 
@@ -45,7 +45,7 @@ const BlogPreview = () => {
               </Link>
               
               <div className="p-5">
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                <div className="flex items-center gap-4 text-sm text-muted-foreground dark:text-gray-400 mb-3">
                   <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-1" />
                     <time dateTime={post.date}>
@@ -64,10 +64,10 @@ const BlogPreview = () => {
                 </div>
                 
                 <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
-                  <h3 className="font-bold text-xl mb-2">{post.title}</h3>
+                  <h3 className="font-bold text-xl mb-2 text-foreground dark:text-white">{post.title}</h3>
                 </Link>
                 
-                <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
+                <p className="text-muted-foreground dark:text-gray-300 mb-4 line-clamp-2">{post.excerpt}</p>
                 
                 <Link 
                   to={`/blog/${post.slug}`}

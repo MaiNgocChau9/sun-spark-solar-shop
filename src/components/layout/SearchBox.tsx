@@ -44,8 +44,8 @@ const SearchBox = ({ onSearch, placeholder, className = '' }: SearchBoxProps) =>
       // Already on blog page, no need to navigate
       navigate(`/blog?search=${encodeURIComponent(searchQuery)}`);
     } else {
-      // On home page or other pages, navigate to products with search param
-      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      // On home page hoặc trang khác, tìm kiếm tổng hợp
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
   };
 
