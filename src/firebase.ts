@@ -28,8 +28,7 @@ import {
     serverTimestamp,
     increment,
     FieldValue
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"; 
-// import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js"; // Nếu cần Storage
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js"; // Nếu cần Analytics
 
 /**
@@ -57,8 +56,6 @@ const app = initializeApp(firebaseConfig);
 // bên cạnh việc export service `auth` và `db`.
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-// export const storage = getStorage(app); // Nếu cần
-// export const analytics = getAnalytics(app); // Nếu cần
 
 // Create a custom addDoc function since it's not exported from the CDN
 export const addDoc = (collectionRef: any, data: any) => {

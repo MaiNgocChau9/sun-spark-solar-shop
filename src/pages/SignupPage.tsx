@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Thêm useEffect
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Thêm Link, useLocation
-import { auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from '../firebase';
-// import { db, doc, setDoc } from '../firebase'; // Bỏ comment nếu dùng Firestore để lưu user
+import { auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, db, doc, setDoc, serverTimestamp } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -15,11 +14,16 @@ const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [avatarURL, setAvatarURL] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // State cho loading
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser } = useAuth();
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAvatarURL((e.target as HTMLInputElement).value);
+  };
 
   useEffect(() => {
     if (currentUser) {
@@ -38,16 +42,18 @@ const SignupPage: React.FC = () => {
     }
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      // const user = userCredential.user;
-      // TODO: Save additional user info to Firestore here (Giai đoạn 3)
-      // Ví dụ:
-      // await setDoc(doc(db, "users", user.uid), {
-      //   email: user.email,
-      //   displayName: user.email?.split('@')[0],
-      //   createdAt: serverTimestamp(), // Sử dụng serverTimestamp
-      //   role: 'customer'
-      // });
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        avatar: avatarURL || null,
+        password,
+        createdAt: serverTimestamp(),
+        role: 'customer'
+      });
+
       // Chuyển hướng đã được xử lý bởi useEffect
     } catch (err: any) {
       let friendlyError = 'Không thể tạo tài khoản. Vui lòng thử lại.';
@@ -75,22 +81,20 @@ const SignupPage: React.FC = () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      // const user = result.user;
-      // TODO: Check if user is new and save info to Firestore (Giai đoạn 3)
-      // Ví dụ:
-      // const userDocRef = doc(db, "users", user.uid);
-      // const userDocSnap = await getDoc(userDocRef);
-      // if (!userDocSnap.exists()) {
-      //   await setDoc(userDocRef, {
-      //     email: user.email,
-      //     displayName: user.displayName || user.email?.split('@')[0],
-      //     photoURL: user.photoURL,
-      //     createdAt: serverTimestamp(),
-      //     role: 'customer'
-      //   });
-      // }
-      // Chuyển hướng đã được xử lý bởi useEffect
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Generate a random password for Google users
+      const randomPassword = Math.random().toString(36).slice(-8);
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        avatar: user.photoURL || null,
+        password: randomPassword,
+        createdAt: serverTimestamp(),
+        role: 'customer'
+      });
     } catch (err: any) {
       setError(err.message || 'Đăng nhập bằng Google thất bại.');
       console.error("Google sign-in error:", err);
@@ -153,6 +157,18 @@ const SignupPage: React.FC = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   minLength={6}
+                  disabled={loading}
+                  className="bg-white/70 dark:bg-slate-800/70 dark:text-slate-50 dark:placeholder-slate-400"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="avatar-url" className="dark:text-slate-200">Link ảnh đại diện</Label>
+                <Input
+                  id="avatar-url"
+                  type="text"
+                  placeholder="https://example.com/avatar.jpg"
+                  value={avatarURL || ""}
+                  onChange={(e) => setAvatarURL(e.target.value)}
                   disabled={loading}
                   className="bg-white/70 dark:bg-slate-800/70 dark:text-slate-50 dark:placeholder-slate-400"
                 />
